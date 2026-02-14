@@ -33,22 +33,24 @@ A production-ready, multi-tier IAM (Identity and Access Management) architecture
 ```mermaid
 graph TB
     subgraph AWS["☁️ AWS Account: 103976430153"]
-        Root["🔐 Root Account<br/>MFA Enabled ✓<br/>Emergency Use Only"]
-        Admin["👤 admin-user<br/>IAM Admin<br/>MFA Enabled ✓<br/>AdministratorAccess"]
-        
+        Root["🔐 Root Account\nMFA Enabled ✓\nEmergency Use Only"]
+        Admin["👤 admin-user\nIAM Admin\nMFA Enabled ✓\nAdministratorAccess"]
+
         subgraph Roles["IAM Roles (MFA Required)"]
-            AdminRole["🎭 Cloud-Secure-Admin<br/>📋 AdministratorAccess<br/>Full AWS Access"]
-            DevRole["🎭 CloudSecure-Developer<br/>📋 Custom Policy<br/>Limited Access"]
+            AdminRole["🎭 Cloud-Secure-Admin\n📋 AdministratorAccess\nFull AWS Access"]
+            DevRole["🎭 CloudSecure-Developer\n📋 Custom Policy\nLimited Access"]
         end
-        
+
         Admin -->|"AssumeRole"| AdminRole
         Admin -->|"AssumeRole"| DevRole
     end
-    
-    style Root fill:#ff9999
-    style Admin fill:#99ccff
-    style AdminRole fill:#99ff99
-    style DevRole fill:#ffff99
+
+    style Root fill:#cc0000,color:#ffffff
+    style Admin fill:#0055cc,color:#ffffff
+    style AdminRole fill:#006600,color:#ffffff
+    style DevRole fill:#cc8800,color:#ffffff
+    style Roles fill:#333333,color:#ffffff
+    style AWS fill:#222222,color:#ffffff
 ```
 
 ### Role Switching Flow
@@ -84,7 +86,7 @@ graph LR
         A4["✅ Billing Access"]
         A5["✅ VPC Management"]
     end
-    
+
     subgraph Developer["🎭 CloudSecure-Developer"]
         D1["✅ Launch/Stop EC2"]
         D2["✅ S3 Read/Write dev-*"]
@@ -93,21 +95,71 @@ graph LR
         D5["❌ Billing Access"]
         D6["❌ VPC Modifications"]
     end
-    
-    style A1 fill:#d4edda
-    style A2 fill:#d4edda
-    style A3 fill:#d4edda
-    style A4 fill:#d4edda
-    style A5 fill:#d4edda
-    style D1 fill:#d4edda
-    style D2 fill:#d4edda
-    style D3 fill:#f8d7da
-    style D4 fill:#f8d7da
-    style D5 fill:#f8d7da
-    style D6 fill:#f8d7da
-```
 
+    style Admin fill:#1a472a,color:#ffffff
+    style Developer fill:#4a0000,color:#ffffff
+    style A1 fill:#1e7e34,color:#ffffff
+    style A2 fill:#1e7e34,color:#ffffff
+    style A3 fill:#1e7e34,color:#ffffff
+    style A4 fill:#1e7e34,color:#ffffff
+    style A5 fill:#1e7e34,color:#ffffff
+    style D1 fill:#1e7e34,color:#ffffff
+    style D2 fill:#1e7e34,color:#ffffff
+    style D3 fill:#cc0000,color:#ffffff
+    style D4 fill:#cc0000,color:#ffffff
+    style D5 fill:#cc0000,color:#ffffff
+    style D6 fill:#cc0000,color:#ffffff
+```
+# Security Controls Diagram
+
+```mermaid
+graph TD
+    Start["🚀 Start"]
+    Start --> RootCheck{"Using Root Account?"}
+    RootCheck -->|Yes| Stop1["❌ STOP\nCreate IAM User"]
+    RootCheck -->|No| MFACheck{"MFA Enabled?"}
+    MFACheck -->|No| Stop2["❌ STOP\nEnable MFA"]
+    MFACheck -->|Yes| AssumeRole["Attempt AssumeRole"]
+    AssumeRole --> TrustCheck{"Trust Policy Allows?"}
+    TrustCheck -->|No| Deny["❌ Access Denied"]
+    TrustCheck -->|Yes| MFAPresent{"MFA Present?"}
+    MFAPresent -->|No| Deny
+    MFAPresent -->|Yes| Grant["✅ Grant Temp Credentials"]
+    Grant --> Session["⏱️ Active Session\n1 hour"]
+    Session --> Permissions["🔐 Apply Role Permissions"]
+
+    style Start fill:#0055cc,color:#ffffff
+    style Stop1 fill:#cc0000,color:#ffffff
+    style Stop2 fill:#cc0000,color:#ffffff
+    style Deny fill:#cc0000,color:#ffffff
+    style Grant fill:#006600,color:#ffffff
+    style Session fill:#cc8800,color:#ffffff
+    style Permissions fill:#006600,color:#ffffff
+    style RootCheck fill:#444444,color:#ffffff
+    style MFACheck fill:#444444,color:#ffffff
+    style TrustCheck fill:#444444,color:#ffffff
+    style MFAPresent fill:#444444,color:#ffffff
+    style AssumeRole fill:#333333,color:#ffffff
+```
+# Terraform Workflow Diagram
+```mermaid
+graph LR
+    Code["💻 Write .tf Files"] --> Init["🔄 terraform init"]
+    Init --> Plan["📋 terraform plan\nPreview"]
+    Plan --> Review{"✅ OK?"}
+    Review -->|No| Code
+    Review -->|Yes| Apply["🚀 terraform apply\nCreate"]
+    Apply --> AWS["☁️ AWS Resources\nCreated"]
+
+    style Code fill:#0055cc,color:#ffffff
+    style Init fill:#cc8800,color:#ffffff
+    style Plan fill:#cc8800,color:#ffffff
+    style Review fill:#444444,color:#ffffff
+    style Apply fill:#006600,color:#ffffff
+    style AWS fill:#006600,color:#ffffff
+```
 ---
+
 
 ## 💼 Project Summary
 
