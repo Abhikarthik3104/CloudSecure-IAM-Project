@@ -1,0 +1,30 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "iam:EnableMFADevice",
+                "iam:ResyncMFADevice",
+                "iam:CreateVirtualMFADevice",
+                "iam:ListMFADevices",
+                "iam:ListVirtualMFADevices",
+                "iam:GetUser"
+            ],
+            "Resource": [
+                "arn:aws:iam::103976430153:user/${aws:username}",
+                "arn:aws:iam::103976430153:mfa/${aws:username}"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": [
+                "arn:aws:iam::103976430153:role/CloudSecure-Admin",
+                "arn:aws:iam::103976430153:role/CloudSecure-Developer"
+            ]
+        }
+    ]
+}
