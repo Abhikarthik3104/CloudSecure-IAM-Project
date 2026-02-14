@@ -1,8 +1,8 @@
 # Terraform
-terraform/.terraform/
-terraform/*.tfstate
-terraform/*.tfstate.backup
-terraform/.terraform.lock.hcl
+Terraform/*.tfstate
+Terraform/*.tfstate.backup
+Terraform/.terraform/
+Terraform/.terraform.lock.hcl
 
 # AWS
 .aws/
