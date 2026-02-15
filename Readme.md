@@ -33,7 +33,7 @@ A production-ready, multi-tier IAM (Identity and Access Management) architecture
 ```mermaid
 graph TB
     subgraph AWS["☁️ AWS Account: 103976430153"]
-        Root["🔐 Root Account\nMFA Enabled ✓\nEmergency Use Only"]
+        Root["🔐 Root Account\nMFA Enabled <br/>anEmergency Use Only"]
         Admin["👤 admin-user<br/>IAM Admin<br/>MFA Enabled ✓<br/>AdministratorAccess"]
 
         subgraph Roles["IAM Roles (MFA Required)"]
