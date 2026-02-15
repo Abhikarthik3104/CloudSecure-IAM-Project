@@ -34,7 +34,7 @@ A production-ready, multi-tier IAM (Identity and Access Management) architecture
 graph TB
     subgraph AWS["☁️ AWS Account: 103976430153"]
         Root["🔐 Root Account\nMFA Enabled ✓\nEmergency Use Only"]
-        Admin["👤 admin-user\nIAM Admin\nMFA Enabled ✓\nAdministratorAccess"]
+        Admin["👤 admin-user<br/>IAM Admin<br/>MFA Enabled ✓<br/>AdministratorAccess"]
 
         subgraph Roles["IAM Roles (MFA Required)"]
             AdminRole["🎭 Cloud-Secure-Admin\n📋 AdministratorAccess\nFull AWS Access"]
