@@ -37,8 +37,8 @@ graph TB
         Admin["👤 admin-user<br/>IAM Admin<br/>MFA Enabled ✓<br/>AdministratorAccess"]
 
         subgraph Roles["IAM Roles (MFA Required)"]
-            AdminRole["🎭 Cloud-Secure-Admin\n📋 AdministratorAccess\nFull AWS Access"]
-            DevRole["🎭 CloudSecure-Developer\n📋 Custom Policy\nLimited Access"]
+            AdminRole["🎭 Cloud-Secure-Admin<br/>📋 AdministratorAccess<>br/Full AWS Access"]
+            DevRole["🎭 CloudSecure-Developer<br/>📋 Custom Policy<br/>Limited Access"]
         end
 
         Admin -->|"AssumeRole"| AdminRole
